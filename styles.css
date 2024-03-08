@@ -1,3 +1,6 @@
+body {
+    background-image: url();
+}
 .container {
     display: flex;
     flex-direction: column;

@@ -170,15 +170,23 @@ function draw() {
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "yellow";
-  ctx.font = "15px Arial";
+  ctx.fillStyle = "#c8b63e";
+  ctx.font = "bold 30px Arial ";
+  
 
   ctx.beginPath();
   ctx.moveTo(canvas.width / 2, 0);
   ctx.lineTo(canvas.width / 2, canvas.height);
-  ctx.strokeStyle = "yellow"; // Set line color to white
+  ctx.strokeStyle = "#c8b63e"; // Set line color to white
   ctx.stroke();
   ctx.closePath();
+  
+  //Draw a circle
+  ctx.beginPath();
+  ctx.arc(400, 300, 150, 0, 2 * Math.PI); // (horizontal, diagonal, size, start angle to 0 and end at 2*Math.PI)
+  ctx.strokeStyle = "#c8b63e";
+  ctx.stroke();
+  
 
   // Draw ball
   ctx.beginPath();
@@ -193,8 +201,8 @@ function draw() {
   ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
 
   // Draw scores
-  ctx.fillText("Score: " + leftPlayerScore, 10, 20);
-  ctx.fillText("Score: " + rightPlayerScore, canvas.width - 70, 20);
+  ctx.fillText(leftPlayerScore, 150, 200);
+  ctx.fillText(rightPlayerScore, canvas.width - 150, 200);
 }
 
 // Game loop
