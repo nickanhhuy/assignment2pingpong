@@ -33,8 +33,8 @@ addEventListener("load", (event) => {
 var ballRadius = 10;
 var ballX = canvas.width / 2;
 var ballY = canvas.height / 2;
-var ballSpeedX = 5;
-var ballSpeedY = 5;
+var ballSpeedX = 3;
+var ballSpeedY = 3;
 
 // Define paddle properties
 var paddleHeight = 80;
@@ -46,7 +46,7 @@ var paddleSpeed = 10;
 // Define score properties
 var leftPlayerScore = 0;
 var rightPlayerScore = 0;
-var maxScore = 10;
+var maxScore = 20;
 
 // Listen for keyboard events
 document.addEventListener("keydown", keyDownHandler);
@@ -170,13 +170,13 @@ function draw() {
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#FFF";
+  ctx.fillStyle = "yellow";
   ctx.font = "15px Arial";
 
   ctx.beginPath();
   ctx.moveTo(canvas.width / 2, 0);
   ctx.lineTo(canvas.width / 2, canvas.height);
-  ctx.strokeStyle = "#FFF"; // Set line color to white
+  ctx.strokeStyle = "yellow"; // Set line color to white
   ctx.stroke();
   ctx.closePath();
 
