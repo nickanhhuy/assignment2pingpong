@@ -30,18 +30,31 @@ addEventListener("load", (event) => {
 
 
 // Define ball properties
-var ballRadius = 10;
-var ballX = canvas.width / 2;
-var ballY = canvas.height / 2;
-var ballSpeedX = 3;
-var ballSpeedY = 3;
+const ball = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+    speedx:2,
+    speedy:2,
+    radius: 10,
+    color: "#c8b63e",
+    draw() {
+        // Draw ball
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    },
+};
+
+
 
 // Define paddle properties
 var paddleHeight = 80;
 var paddleWidth = 10;
 var leftPaddleY = canvas.height / 2 - paddleHeight / 2;
 var rightPaddleY = canvas.height / 2 - paddleHeight / 2;
-var paddleSpeed = 10;
+var paddleSpeed = 8;
 
 // Define score properties
 var leftPlayerScore = 0;
@@ -100,44 +113,44 @@ function update() {
   }
 
   // Move right paddle automatically based on ball position
-  // if (ballY > rightPaddleY + paddleHeight / 2) {
-  //   rightPaddleY += paddleSpeed;
-  // } else if (ballY < rightPaddleY + paddleHeight / 2) {
-  //   rightPaddleY -= paddleSpeed;
-  // }
+  if (ball.y > rightPaddleY + paddleHeight / 2) {
+    rightPaddleY += paddleSpeed;
+  } else if (ball.y < rightPaddleY + paddleHeight / 2) {
+    rightPaddleY -= paddleSpeed;
+  }
 
   // Move ball
-  ballX += ballSpeedX;
-  ballY += ballSpeedY;
+  ball.x += ball.speedx;
+  ball.y += ball.speedy;
 
   // Check if ball collides with top or bottom of canvas
-  if (ballY - ballRadius < 0 || ballY + ballRadius > canvas.height) {
-    ballSpeedY = -ballSpeedY;
+  if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+    ball.speedy = -ball.speedy;
   }
 
   // Check if ball collides with left paddle
   if (
-    ballX - ballRadius < paddleWidth &&
-    ballY > leftPaddleY &&
-    ballY < leftPaddleY + paddleHeight
+    ball.x - ball.radius < paddleWidth &&
+    ball.y > leftPaddleY &&
+    ball.y < leftPaddleY + paddleHeight
   ) {
-    ballSpeedX = -ballSpeedX;
+    ball.speedx = -ball.speedx;
   }
 
   // Check if ball collides with right paddle
   if (
-    ballX + ballRadius > canvas.width - paddleWidth &&
-    ballY > rightPaddleY &&
-    ballY < rightPaddleY + paddleHeight
+    ball.x + ball.radius > canvas.width - paddleWidth &&
+    ball.y > rightPaddleY &&
+    ball.y < rightPaddleY + paddleHeight
   ) {
-    ballSpeedX = -ballSpeedX;
+    ball.speedx = -ball.speedx;
   }
 
   // Check if ball goes out of bounds on left or right side of canvas
-  if (ballX < 0) {
+  if (ball.x < 0) {
     rightPlayerScore++;
     reset();
-  } else if (ballX > canvas.width) {
+  } else if (ball.x > canvas.width) {
     leftPlayerScore++;
     reset();
   }
@@ -159,57 +172,62 @@ function playerWin(player) {
 
 // Reset ball to center of screen
 function reset() {
-  ballX = canvas.width / 2;
-  ballY = canvas.height / 2;
-  ballSpeedX = -ballSpeedX;
-  ballSpeedY = Math.random() * 10 - 5;
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.speedx = -ball.speedx;
+  ball.speedy = Math.random() * 10 - 5;
 }
 
 // Draw objects on canvas
 function draw() {
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#c8b63e";
+  //Color for paddles and score
+  ctx.fillStyle = "#c10300";
   ctx.font = "bold 30px Arial ";
-  
 
+  //Draw a line
   ctx.beginPath();
   ctx.moveTo(canvas.width / 2, 0);
   ctx.lineTo(canvas.width / 2, canvas.height);
-  ctx.strokeStyle = "#c8b63e"; // Set line color to white
+  ctx.strokeStyle = "#c10300"; // Set line color to white
   ctx.stroke();
   ctx.closePath();
   
   //Draw a circle
   ctx.beginPath();
   ctx.arc(400, 300, 150, 0, 2 * Math.PI); // (horizontal, diagonal, size, start angle to 0 and end at 2*Math.PI)
-  ctx.strokeStyle = "#c8b63e";
-  ctx.stroke();
-  
-
-  // Draw ball
-  ctx.beginPath();
-  ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.strokeStyle = "#c10300";
+  ctx.stroke()
   ctx.closePath();
 
+  
+
   // Draw left paddle
-  ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
+  ctx.fillRect(10, leftPaddleY, paddleWidth, paddleHeight);
 
   // Draw right paddle
-  ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+  ctx.fillRect(canvas.width - paddleWidth - 10, rightPaddleY, paddleWidth, paddleHeight);
 
   // Draw scores
   ctx.fillText(leftPlayerScore, 150, 200);
   ctx.fillText(rightPlayerScore, canvas.width - 150, 200);
+  
+  //Draw a ball and fill its color
+  ball.draw();
+
+  //Fill background
+  ctx.fillStyle = "rgb(0 255 255/ 20%)"
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
 }
+
 
 // Game loop
 function loop() {
   update();
   draw();
   animationId = requestAnimationFrame(loop);
+  
 }
 
 $('#message-modal-close').on('click', function() {
