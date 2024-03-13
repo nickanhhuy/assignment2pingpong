@@ -56,6 +56,18 @@ var leftPaddleY = canvas.height / 2 - paddleHeight / 2;
 var rightPaddleY = canvas.height / 2 - paddleHeight / 2;
 var paddleSpeed = 8;
 
+// Define barriers properties
+const barrier = {
+  x1: 20,
+  y1: 20,
+  x2: 20,
+  y2: 80,
+  x3: 80,
+  y3: 20
+};
+
+
+
 // Define score properties
 var leftPlayerScore = 0;
 var rightPlayerScore = 0;
@@ -93,6 +105,23 @@ function keyUpHandler(e) {
     wPressed = false;
   } else if (e.key === "s") {
     sPressed = false;
+  }
+}
+
+function checkBarrierCollision() {
+  // Calculate the area of the triangle formed by the ball and the three points of the barrier
+  const area = Math.abs((barrier.x2 - barrier.x1) * (ball.y - barrier.y1) - (barrier.y2 - barrier.y1) * (ball.x - barrier.x1)) +
+               Math.abs((barrier.x3 - barrier.x2) * (ball.y - barrier.y2) - (barrier.y3 - barrier.y2) * (ball.x - barrier.x2)) +
+               Math.abs((barrier.x1 - barrier.x3) * (ball.y - barrier.y3) - (barrier.y1 - barrier.y3) * (ball.x - barrier.x3));
+  
+  // Calculate the area of the triangle formed by the barrier's points
+  const barrierArea = Math.abs((barrier.x2 - barrier.x1) * (barrier.y3 - barrier.y1) - (barrier.y2 - barrier.y1) * (barrier.x3 - barrier.x1));
+
+  // If the sum of areas is equal to the area of the barrier, then the ball is inside the barrier
+  if (area === barrierArea) {
+      // Reverse the ball's direction
+      ball.speedx = -ball.speedx;
+      ball.speedy = -ball.speedy;
   }
 }
 
@@ -136,6 +165,7 @@ function update() {
   ) {
     ball.speedx = -ball.speedx;
   }
+  checkBarrierCollision();
 
   // Check if ball collides with right paddle
   if (
@@ -147,10 +177,10 @@ function update() {
   }
 
   // Check if ball goes out of bounds on left or right side of canvas
-  if (ball.x < 0) {
+  if (ball.x < 10) {
     rightPlayerScore++;
     reset();
-  } else if (ball.x > canvas.width) {
+  } else if (ball.x > canvas.width - 10) {
     leftPlayerScore++;
     reset();
   }
@@ -159,10 +189,9 @@ function update() {
   if (leftPlayerScore === maxScore) {
     playerWin("Left player");
   } else if (rightPlayerScore === maxScore) {
-    playerWin("Right player");
+    playerWin("AI");
   }
 }
-
 function playerWin(player) {
   var message = "Congratulations! " + player + " win!";
   $('#message').text(message); // Set the message text
@@ -189,6 +218,7 @@ function draw() {
   ctx.beginPath();
   ctx.moveTo(canvas.width / 2, 0);
   ctx.lineTo(canvas.width / 2, canvas.height);
+  ctx.lineWidth = 5;
   ctx.strokeStyle = "#c10300"; // Set line color to white
   ctx.stroke();
   ctx.closePath();
@@ -197,20 +227,30 @@ function draw() {
   ctx.beginPath();
   ctx.arc(400, 300, 150, 0, 2 * Math.PI); // (horizontal, diagonal, size, start angle to 0 and end at 2*Math.PI)
   ctx.strokeStyle = "#c10300";
+  ctx.lineWidth = 5;
   ctx.stroke()
   ctx.closePath();
 
   
-
+  
   // Draw left paddle
-  ctx.fillRect(10, leftPaddleY, paddleWidth, paddleHeight);
+  ctx.fillRect(5, leftPaddleY, paddleWidth, paddleHeight);
 
   // Draw right paddle
-  ctx.fillRect(canvas.width - paddleWidth - 10, rightPaddleY, paddleWidth, paddleHeight);
+  ctx.fillRect(canvas.width - paddleWidth - 5, rightPaddleY, paddleWidth, paddleHeight);
 
   // Draw scores
   ctx.fillText(leftPlayerScore, 150, 200);
   ctx.fillText(rightPlayerScore, canvas.width - 150, 200);
+  
+  //Draw barriers
+  ctx.beginPath();
+  ctx.moveTo(barrier.x1, barrier.y1);
+  ctx.lineTo(barrier.x2, barrier.y2);
+  ctx.lineTo(barrier.x3, barrier.y3);
+  ctx.closePath();
+  ctx.strokeStyle = "#c10300"; 
+  ctx.stroke();
   
   //Draw a ball and fill its color
   ball.draw();
