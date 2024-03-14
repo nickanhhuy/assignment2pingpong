@@ -1,6 +1,6 @@
 body {
-    background-image: url(./image/background.jpg);
-    background-size: 100%;
+  background-color: grey; /* For browsers that do not support gradients */
+  background-image: repeating-linear-gradient(45deg,black,grey 7%, black 10%);
 }
 .container {
     display: flex;
