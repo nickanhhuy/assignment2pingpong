@@ -266,10 +266,10 @@ function draw() {
   
   
   // Draw left paddle
-  ctx.fillRect(5, leftPaddleY, paddleWidth, paddleHeight);
+  ctx.fillRect(7, leftPaddleY, paddleWidth, paddleHeight);
 
   // Draw right paddle
-  ctx.fillRect(canvas.width - paddleWidth - 5, rightPaddleY, paddleWidth, paddleHeight);
+  ctx.fillRect(canvas.width - paddleWidth - 7, rightPaddleY, paddleWidth, paddleHeight);
 
   // Draw scores
   ctx.fillText(leftPlayerScore, 150, 200);
