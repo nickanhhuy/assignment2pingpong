@@ -1,5 +1,5 @@
 body {
-  background-color: grey; /* For browsers that do not support gradients */
+  background-color: grey; 
   background-image: repeating-linear-gradient(45deg,black,grey 7%, black 10%);
 }
 .container {
