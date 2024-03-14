@@ -12,10 +12,13 @@ var animationId;
 var gameRunning = false;
 
 startBtn.addEventListener("click", function() {
-  if (!gameRunning) { // only start the game if gameRunning is false
-    gameRunning = true; // set gameRunning to true when the game starts
-    loop();
-  }
+  if (gameMode==="multi-btn" || gameMode === "ai-btn") {
+    if (!gameRunning) { // only start the game if gameRunning is false
+      gameRunning = true; // set gameRunning to true when the game starts
+      loop();
+    } }
+  else {$('#message').text("Please choose your game mode (Multiplayer or Vs Computer)"); // Set the message text
+  $('#message-modal').modal('show'); } // Display the message modal
 });
 
 pauseBtn.addEventListener("click", function() {
@@ -68,13 +71,18 @@ var rightPaddleY = canvas.height / 2 - paddleHeight / 2;
 var paddleSpeed = 8;
 
 // Define barriers properties
-const barrier = {
-  x1: 20,
-  y1: 20,
-  x2: 20,
-  y2: 80,
-  x3: 80,
-  y3: 20
+const barrier1 = {
+  x: canvas.width / 2 - 75,
+  y: 0,
+  width: 150,
+  height: 50,
+};
+
+const barrier2 = {
+  x: canvas.width / 2 - 75,
+  y: canvas.height - 50,
+  width: 150,
+  height: 50,
 };
 
 
@@ -120,19 +128,27 @@ function keyUpHandler(e) {
 }
 
 function checkBarrierCollision() {
-  // Calculate the area of the triangle formed by the ball and the three points of the barrier
-  const area = Math.abs((barrier.x2 - barrier.x1) * (ball.y - barrier.y1) - (barrier.y2 - barrier.y1) * (ball.x - barrier.x1)) +
-               Math.abs((barrier.x3 - barrier.x2) * (ball.y - barrier.y2) - (barrier.y3 - barrier.y2) * (ball.x - barrier.x2)) +
-               Math.abs((barrier.x1 - barrier.x3) * (ball.y - barrier.y3) - (barrier.y1 - barrier.y3) * (ball.x - barrier.x3));
-  
-  // Calculate the area of the triangle formed by the barrier's points
-  const barrierArea = Math.abs((barrier.x2 - barrier.x1) * (barrier.y3 - barrier.y1) - (barrier.y2 - barrier.y1) * (barrier.x3 - barrier.x1));
-
-  // If the sum of areas is equal to the area of the barrier, then the ball is inside the barrier
-  if (area === barrierArea) {
+  { if (
+    ball.x + ball.radius > barrier1.x &&
+    ball.x - ball.radius < barrier1.x + barrier1.width &&
+    ball.y + ball.radius > barrier1.y &&
+    ball.y - ball.radius < barrier1.y + barrier1.height
+  ) {
       // Reverse the ball's direction
       ball.speedx = -ball.speedx;
       ball.speedy = -ball.speedy;
+    }
+
+    if (
+      ball.x + ball.radius > barrier2.x &&
+      ball.x - ball.radius < barrier2.x + barrier2.width &&
+      ball.y + ball.radius > barrier2.y &&
+      ball.y - ball.radius < barrier2.y + barrier2.height
+    ) {
+        // Reverse the ball's direction
+        ball.speedx = -ball.speedx;
+        ball.speedy = -ball.speedy;
+      }
   }
 }
 
@@ -260,19 +276,15 @@ function draw() {
   ctx.fillText(rightPlayerScore, canvas.width - 150, 200);
   
   //Draw barriers
-  ctx.beginPath();
-  ctx.moveTo(barrier.x1, barrier.y1);
-  ctx.lineTo(barrier.x2, barrier.y2);
-  ctx.lineTo(barrier.x3, barrier.y3);
-  ctx.closePath();
-  ctx.strokeStyle = "#c10300"; 
-  ctx.stroke();
-  
+  ctx.fillStyle = "#1c9048";
+  ctx.fillRect(barrier1.x, barrier1.y, barrier1.width, barrier1.height);
+  ctx.fillRect(barrier2.x, barrier2.y, barrier2.width, barrier2.height);
+
   //Draw a ball and fill its color
   ball.draw();
 
   //Fill background
-  ctx.fillStyle = "rgb(0 255 255/ 20%)"
+  ctx.fillStyle = "rgb(0 255 255/ 20%)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
 }
