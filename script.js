@@ -5,6 +5,9 @@ var ctx = canvas.getContext("2d");
 var startBtn = document.getElementById("start-btn");
 var pauseBtn = document.getElementById("pause-btn");
 var restartBtn = document.getElementById("restart-btn");
+var multiplayerBtn = document.getElementById("multi-btn");
+var aiBtn = document.getElementById("ai-btn");
+var gameMode = "";
 var animationId;
 var gameRunning = false;
 
@@ -23,6 +26,14 @@ pauseBtn.addEventListener("click", function() {
 restartBtn.addEventListener("click", function() {
   document.location.reload();
 });
+
+multiplayerBtn.addEventListener("click", function() {
+  gameMode = "multi-btn";
+})
+
+aiBtn.addEventListener("click",function() {
+  gameMode = "ai-btn";
+})
 
 addEventListener("load", (event) => {
   draw();
@@ -127,25 +138,28 @@ function checkBarrierCollision() {
 
 // Update game state
 function update() {
-  // Move paddles
-  if (upPressed && rightPaddleY > 0) {
-    rightPaddleY -= paddleSpeed;
-  } else if (downPressed && rightPaddleY + paddleHeight < canvas.height) {
+
+  if (gameMode === "multi-btn") {
+  // Move right paddles based on up and down arrows symbol
+    if (upPressed && rightPaddleY > 0) {
+      rightPaddleY -= paddleSpeed;
+    } else if (downPressed && rightPaddleY + paddleHeight < canvas.height) {
     rightPaddleY += paddleSpeed;
+    } 
+  } 
+  // Move right paddle automatically based on ball position
+  else if (gameMode === "ai-btn") {
+      if (ball.y > rightPaddleY + paddleHeight / 2) {
+      rightPaddleY += paddleSpeed;
+    } else if (ball.y < rightPaddleY + paddleHeight / 2) {
+      rightPaddleY -= paddleSpeed;}
   }
 
-  // Move right paddle based on "w" and "s" keys
+  // Move left paddle based on "w" and "s" keys
   if (wPressed && leftPaddleY > 0) {
     leftPaddleY -= paddleSpeed;
   } else if (sPressed && leftPaddleY + paddleHeight < canvas.height) {
     leftPaddleY += paddleSpeed;
-  }
-
-  // Move right paddle automatically based on ball position
-  if (ball.y > rightPaddleY + paddleHeight / 2) {
-    rightPaddleY += paddleSpeed;
-  } else if (ball.y < rightPaddleY + paddleHeight / 2) {
-    rightPaddleY -= paddleSpeed;
   }
 
   // Move ball
@@ -189,9 +203,11 @@ function update() {
   if (leftPlayerScore === maxScore) {
     playerWin("Left player");
   } else if (rightPlayerScore === maxScore) {
-    playerWin("AI");
+    playerWin("Right player");
   }
 }
+
+
 function playerWin(player) {
   var message = "Congratulations! " + player + " win!";
   $('#message').text(message); // Set the message text
