@@ -50,8 +50,8 @@ addEventListener("load", (event) => {
 const ball = {
     x: canvas.width / 2,
     y: canvas.height / 2,
-    speedx:2,
-    speedy:2,
+    speedx:4,
+    speedy:4,
     radius: 10,
     color: "#c8b63e",
     draw() {
