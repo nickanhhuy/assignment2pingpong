@@ -3,19 +3,33 @@ body {
   background-image: repeating-linear-gradient(45deg,black,grey 7%, black 10%);
 }
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   }
+
+canvas {
+  background: #043355;
+  margin-right: 70px;
+  padding: 10px;
+}
+
+.scoreboard {
+  background-color: burlywood;
+  width: 400px;
+  border-radius: 20px;
+  border: solid 5px #c95716;
+  height: 200px;
+  padding-left: 20px;
+}
   
-  .button{
+.button{
     display: flex;
     justify-content: center;
     margin-top: 15px;
   }
   
-  .btn {
+.btn {
     background-color: #4caf50;
     border: none;
     color: white;
@@ -30,11 +44,11 @@ body {
   }
 
   
-  .btn:hover {
+.btn:hover {
     background-color: #3e8e41;
   }
-
-  .btn {
+  
+.btn {
     background-color: #0d7a28;
     border: none;
     color: white;
@@ -48,7 +62,7 @@ body {
     border-radius: 5px;
   }
 
-  .btngame {
+.btngame {
     background-color: #c95716;
     border: none;
     color: white;
@@ -62,16 +76,14 @@ body {
     border-radius: 5px;
   }
   
-  .control {
+.control {
       text-align: center;
-      background-color: #1c9048;
-      
+      background-color: #1c9048; 
       font-size: 16px;
       border-radius: 2px;
       justify-content: center;
            
   }
   
-  canvas {
-    background: #043355;
-  }
+  
+  

@@ -8,6 +8,9 @@ var restartBtn = document.getElementById("restart-btn");
 var multiplayerBtn = document.getElementById("multi-btn");
 var aiBtn = document.getElementById("ai-btn");
 var gameMode = "";
+var LplayerScore = document.getElementById("Leftplayer");
+var RplayerScore = document.getElementById("Rightplayer");
+var messageElement = document.getElementById("messagedisplay");
 var animationId;
 var gameRunning = false;
 
@@ -92,6 +95,7 @@ var leftPlayerScore = 0;
 var rightPlayerScore = 0;
 var maxScore = 20;
 
+
 // Listen for keyboard events
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
@@ -127,6 +131,7 @@ function keyUpHandler(e) {
   }
 }
 
+//checkbarrier
 function checkBarrierCollision() {
   { if (
     ball.x + ball.radius > barrier1.x &&
@@ -150,6 +155,17 @@ function checkBarrierCollision() {
         ball.speedy = -ball.speedy;
       }
   }
+}
+
+function updateScore(player, score) {
+  if (player === "Leftplayer") {
+      LplayerScore.textContent = score;
+  } else if (player === "Rightplayer") {
+      RplayerScore.textContent = score;
+  }
+  // Display message
+  messageElement.textContent = player + " scored: "+ score;
+  $('#message').show();
 }
 
 // Update game state
@@ -209,11 +225,14 @@ function update() {
   // Check if ball goes out of bounds on left or right side of canvas
   if (ball.x < 10) {
     rightPlayerScore++;
+    updateScore("rightplayer",rightPlayerScore)
     reset();
   } else if (ball.x > canvas.width - 10) {
     leftPlayerScore++;
+    updateScore("leftplayer",leftPlayerScore)
     reset();
   }
+  
 
   // Check if a player has won
   if (leftPlayerScore === maxScore) {
@@ -295,7 +314,6 @@ function loop() {
   update();
   draw();
   animationId = requestAnimationFrame(loop);
-  
 }
 
 $('#message-modal-close').on('click', function() {

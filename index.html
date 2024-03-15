@@ -16,17 +16,25 @@
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
   <canvas id="canvas" width="800" height="600"></canvas>
+  <div class="scoreboard">
+    <h3>Score Board</h3>
+    <div id="leftplayer"></div>
+    <div id="rightplayer"></div>
+    <div id="messagedisplay"></div>
+  </div>
 </div>
+
 <div class="button">
   <button id="start-btn" class="btn">Start</button>
     <button id="pause-btn" class="btn">Pause</button>
     <button id="restart-btn" class="btn">Restart</button>
     <button id="multi-btn" class="btngame">Multiple Player</button>
     <button id="ai-btn" class="btngame">Vs Computer</button>
-  </div>
- <p class="control">Control: Player Left(W and S) | Player Right(↑ and ↓)</p>
+</div>
+ 
+<p class="control">Control: Player Left(W and S) | Player Right(↑ and ↓)</p>
   <!-- Add a modal element with an ID -->
 <div class="modal" tabindex="-1" role="dialog" id="message-modal">
   <div class="modal-dialog" role="document">
@@ -40,7 +48,6 @@
     </div>
   </div>
 </div>
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="./js/script.js"></script>
